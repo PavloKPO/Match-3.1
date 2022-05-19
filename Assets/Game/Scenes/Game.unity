@@ -466,6 +466,10 @@ MonoBehaviour:
   - {fileID: -515027122047594265, guid: 0a61d954b230a024e8d8d23050eb6a41, type: 3}
   - {fileID: 6554164663265866747, guid: 0a61d954b230a024e8d8d23050eb6a41, type: 3}
   - {fileID: -3209027340831218189, guid: 0a61d954b230a024e8d8d23050eb6a41, type: 3}
+  xSize: 5
+  ySize: 9
+  xDistance: 1.4
+  yDistance: 1.4
 --- !u!4 &1321526609
 Transform:
   m_ObjectHideFlags: 0
@@ -523,4 +527,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3722a1527babcb4991f81535bac0dd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  xSize: 5
+  ySize: 9
   tile: {fileID: 6727144670124077744, guid: f0fd909868cd8fa4a974cedc1bf41e15, type: 3}
+  xDistance: 1.42
+  yDistance: 1.4

@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class GameBoard : MonoBehaviour
 {
-    public SpriteRenderer spriteRenderer;
-    public GameObject tileFish;
-    public List<Sprite> tileFishSprite = new List<Sprite>();
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private GameObject tileFish;
+    [SerializeField] private List<Sprite> tileFishSprite = new List<Sprite>();
+    [SerializeField] private int xSize = 5, ySize = 9;
+    [SerializeField] private float xDistance = 1.4f, yDistance = 1.4f;
 
-    int xSize = 5, ySize = 9;
-
+    Vector3 startPosition = new Vector3(-0.38f, 8.2f, 0);
     private void CreateGameBoard()
-    {
-        float Dx = 1.42f, Dy = 1.4f;
-        Vector3 startPosition = new Vector3(-0.38f, 8.2f, 0);
+    {       
                
         for(int x = 0; x < xSize; x++)
         {
             Instantiate(tileFish, startPosition, Quaternion.identity);
-            startPosition.x += Dx;
+            startPosition.x += xDistance;
         }
 
     }
