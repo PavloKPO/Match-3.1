@@ -460,11 +460,9 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 0}
   _tileFish: {fileID: 2581573921990035317, guid: f9529027853330c4ab241797cf4d821e, type: 3}
   _tileFishSprite: []
-  _xSize: 5
-  _ySize: 9
-  _xDistance: 1.4
-  _yDistance: 1.4
-  _startPosition: {x: -0.4, y: 8.2}
+  _size: {x: 5, y: 9}
+  _distance: {x: 1.4, y: 1.4}
+  _startPosition: {x: -0.3, y: 8.2}
 --- !u!4 &1321526609
 Transform:
   m_ObjectHideFlags: 0
@@ -522,9 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3722a1527babcb4991f81535bac0dd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _xSize: 5
-  _ySize: 9
-  _yDistance: 1.4
-  _xDistance: 1.4
-  _startPosition: {x: -0.4, y: -3}
+  _size: {x: 5, y: 9}
+  _distance: {x: 1.4, y: 1.4}
+  _startPosition: {x: -0.3, y: -3}
   _tile: {fileID: 6727144670124077744, guid: f0fd909868cd8fa4a974cedc1bf41e15, type: 3}
