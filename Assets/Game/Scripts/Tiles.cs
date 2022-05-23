@@ -1,29 +1,35 @@
-using System.Collections.Generic;
 using UnityEngine;
+
+
 
 public class Tiles : MonoBehaviour
 {
-    [SerializeField] private int xSize = 5, ySize = 9;
-    [SerializeField] private GameObject tile;
-    [SerializeField] private float xDistance = 1.42f, yDistance = 1.4f;
+    [SerializeField] private int _xSize;
+    [SerializeField] private int _ySize;           
+    [SerializeField] private float _yDistance;
+    [SerializeField] private float _xDistance;
 
-    Vector3 startPosition = new Vector3(-0.4f, -3, 0);
+    [SerializeField] private Vector2 _startPosition;
+    
+    [SerializeField] private GameObject _tile;    
 
     [ContextMenu("Create Tiles")]
     private void CreateTiles()
-    {        
+    {
         
-        for(int y = 0; y < ySize; y++)
+        Vector2 _position = new Vector2(_startPosition.x, _startPosition.y);
+        
+        for (int y = 0; y < _ySize; y++)
         {           
 
-            for (int x = 0; x < xSize; x++)
+            for (int x = 0; x < _xSize; x++)
             {
-                Instantiate(tile, startPosition, Quaternion.identity);
-                startPosition.x += xDistance;
+                Instantiate(_tile, _position, Quaternion.identity);
+                _position.x += _xDistance;
             }
 
-            startPosition.x = -0.4f;
-            startPosition.y += yDistance;
+            _position.x =  _startPosition.x;
+            _position.y += _yDistance;
 
             
         }    
@@ -32,6 +38,7 @@ public class Tiles : MonoBehaviour
 
     void Start()
     {
+        
         //CreateTiles();
     }
 
