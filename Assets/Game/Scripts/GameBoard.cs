@@ -1,135 +1,140 @@
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 
 
 public class GameBoard : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private GameObject _tileFish;
-    [SerializeField] private List<Sprite> _tileFishSprite = new List<Sprite>();
-    [SerializeField] private GameObject _tile;
+	[SerializeField] private SpriteRenderer _spriteRenderer;
+	[SerializeField] private GameObject _tileFish;
+	[SerializeField] private List<Sprite> _tileFishSprite = new List<Sprite>();
+	[SerializeField] private GameObject _tile;
 
-    [SerializeField] private Vector2Int _size;
-    [SerializeField] private Vector2 _distance;
-    [SerializeField] private Vector2 _startPosition;
+	private Sprite _newTileFishSprite;
+	private GameObject[,] _tilesArray;
 
-    private Sprite _newTileFishSprite;
-    private GameObject[,] _tilesArray;
+	[SerializeField] private Vector2Int _size;
+	[SerializeField] private Vector2 _distance;
+	[SerializeField] private Vector2 _startPosition;
 
-    public bool IsShifting { get; set; }
-
-
+	
 
 
+	[ContextMenu("Create Tiles")]
+	private void CreateTiles()
+	{
+
+		GameObject[,] _cellArray = new GameObject[_size.x, _size.y];
+		Vector2 position = _startPosition;
+
+		for (int y = 0; y < _size.y; y++)
+		{
+
+			for (int x = 0; x < _size.x; x++)
+			{
+
+				_cellArray[x, y] = Instantiate(_tile, position, Quaternion.identity);
+
+				_cellArray[x, y].name = "Cell(" + x + "," + y + ")";
+				
+				position.x += _distance.x;
+			}
+
+			position.x =  _startPosition.x;
+			position.y -= _distance.y;
+
+
+		}
+	}
+
+	private void CreateGameBoard()
+	{
+		
+		Vector2 position = _startPosition;
+		_tilesArray= new GameObject[_size.x, _size.y];
+
+		for (int x = 0; x < _size.x; x++)
+		{           
+			GameObject newTile = Instantiate(_tileFish, position, Quaternion.identity);
+			_tilesArray[x, 0] = newTile;
+			_tilesArray[x, 0].name = "Fish(" + x + "," + 0 + ")";
+			newTile.transform.SetParent(this.transform);
+
+
+			_newTileFishSprite = _tileFishSprite[Random.Range(0, _tileFishSprite.Count)];
+			_tileFish.GetComponent<SpriteRenderer>().sprite = _newTileFishSprite;
+
+		   position.x += _distance.x;                     
+						
+			
+		}
+		
+	}
+
+  
+
+   private void ShiftTilesDown()
+   {
+		Vector2 tempPos;
+		for (int x = 0; x < _size.x; x++)
+		{
+			for (int y = 0; y < _size.y; y++)
+			{
+				if (_tilesArray[x, y] != null)
+				{
+					if (_tilesArray[x, y +1] == null)
+					{
+						
+						SpriteRenderer render = _tilesArray[x, y].GetComponent<SpriteRenderer>();
+						
+						tempPos = _tilesArray[x, y].transform.position;
+						transform.position = new Vector2(tempPos.x, tempPos.y - _distance.y);
+						render.sprite =  _tilesArray[x, y +1];
+						_tilesArray[x, y] = null;
+
+						
+						
+					}
+				}
+			}
+		}
+		
+	   
+   }
 
 
 
-    [ContextMenu("Create Tiles")]
-    private void CreateTiles()
-    {
-        
-        Vector2 position = _startPosition;
-
-        for (int y = 0; y < _size.y; y++)
-        {
-
-            for (int x = 0; x < _size.x; x++)
-            {
-
-                Instantiate(_tile, position, Quaternion.identity);
-                position.x += _distance.x;
-            }
-
-            position.x =  _startPosition.x;
-            position.y -= _distance.y;
 
 
-        }
-    }
 
 
-    private void CreateGameBoard()
-    {
-        Vector2 position = _startPosition;
-
-        for (int x = 0; x < _size.x; x++)
-        {
-            _newTileFishSprite = _tileFishSprite[Random.Range(0, _tileFishSprite.Count)];
-            _tileFish.GetComponent<SpriteRenderer>().sprite = _newTileFishSprite;
-
-            GameObject newTile = Instantiate(_tileFish, position, Quaternion.identity);
-            _tilesArray[x, 0] = newTile;
-
-            position.x += _distance.x;
-
-        }
-
-    }
-
-    private IEnumerator FindNullTiles()
-    {
-        for(int x = 0; x < _size.x; x++)
-        {
-            for(int y = 0; y < _size.y; y++)
-            {
-                if (_tilesArray[x, y].GetComponent<SpriteRenderer>().sprite == null)
-                {
-                    yield return StartCoroutine(ShiftTilesDown(x, y));
-                    break;
-                }
-            }
-        }
-    }
-
-    private IEnumerator ShiftTilesDown(int x, int yStart, float shiftDelay = 0.3f)
-    {
-        IsShifting = true;
-        List<SpriteRenderer> renders = new List<SpriteRenderer> ();
-        int nullCount = 0;
-
-        for(int y = yStart; y < _size.y; y++)
-        {
-            SpriteRenderer render = _tilesArray[x, y].GetComponent<SpriteRenderer>();
-            if(render.sprite == null)
-            {
-                nullCount++;
-            }
-        }
-
-        for(int i = 0; i < nullCount; i++)
-        {
-            yield return new WaitForSeconds(shiftDelay);
-
-            for(int k = 0; k < renders.Count - 1; k++)
-            {
-                renders[k].sprite = renders[k + 1].sprite;
-                renders[k + 1].sprite = null;
-            }
-        }
-
-        IsShifting = false;
-    }
 
 
-    void Start()
-    {
-        
-        CreateTiles();
-        _tilesArray= new GameObject[_size.x, _size.y];
-        CreateGameBoard();
-        StartCoroutine(FindNullTiles());
-    }
 
 
-    private void Update()
-    {
-        
-    }
+
+	private void Start()
+	{
+		CreateTiles();
+		CreateGameBoard();
+		//ShiftTilesDown();
+	   
+	}
+
+	void Update()
+	{
+		
+	}
 }
 
-    
 
 
-   
-    
+
+
+
+
+
+
+
+	
