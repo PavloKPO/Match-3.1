@@ -458,7 +458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 1321526607}
-  _tileFish: {fileID: 4558273032566637467, guid: 77ebc1c9e1ddb394cbcefad57cbc7b96, type: 3}
+  _tileFish: {fileID: 979639136027629289, guid: 77ebc1c9e1ddb394cbcefad57cbc7b96, type: 3}
   _tileFishSprite:
   - {fileID: -3589528415675698274, guid: 0a61d954b230a024e8d8d23050eb6a41, type: 3}
   - {fileID: 6466912814626516007, guid: 0a61d954b230a024e8d8d23050eb6a41, type: 3}
@@ -470,6 +470,7 @@ MonoBehaviour:
   _size: {x: 5, y: 9}
   _distance: {x: 1.5, y: 1.5}
   _startPosition: {x: -0.5, y: 9}
+  _speed: 4
 --- !u!4 &1321526609
 Transform:
   m_ObjectHideFlags: 0

@@ -7,18 +7,26 @@ using UnityEngine;
 public class GameBoard : MonoBehaviour
 {
 	[SerializeField] private SpriteRenderer _spriteRenderer;
-	[SerializeField] private GameObject _tileFish;
+	[SerializeField] private SpriteRenderer _tileFish;
 	[SerializeField] private List<Sprite> _tileFishSprite = new List<Sprite>();
 	[SerializeField] private GameObject _tile;
 
 	private Sprite _newTileFishSprite;
-	private GameObject[,] _tilesArray;
-
+	private SpriteRenderer[,] _tilesArray;
+	
 	[SerializeField] private Vector2Int _size;
 	[SerializeField] private Vector2 _distance;
 	[SerializeField] private Vector2 _startPosition;
 
+	[SerializeField] private float _speed;
+
 	
+
+
+
+
+
+
 
 
 	[ContextMenu("Create Tiles")]
@@ -48,83 +56,91 @@ public class GameBoard : MonoBehaviour
 		}
 	}
 
-	private void CreateGameBoard()
+	private SpriteRenderer[,] CreateGameBoard()
 	{
 		
 		Vector2 position = _startPosition;
-		_tilesArray= new GameObject[_size.x, _size.y];
+		
 
 		for (int x = 0; x < _size.x; x++)
-		{           
-			GameObject newTile = Instantiate(_tileFish, position, Quaternion.identity);
-			_tilesArray[x, 0] = newTile;
-			_tilesArray[x, 0].name = "Fish(" + x + "," + 0 + ")";
-			newTile.transform.SetParent(this.transform);
+		{
+			if (_tilesArray[x, 0] == null)
+			{
+				SpriteRenderer newTile = Instantiate(_tileFish, position, Quaternion.identity);
+				_tilesArray[x, 0] = newTile;
+				_tilesArray[x, 0].name = "Fish(" + x + "," + 0 + ")";
+				newTile.transform.SetParent(this.transform);
 
 
-			_newTileFishSprite = _tileFishSprite[Random.Range(0, _tileFishSprite.Count)];
-			_tileFish.GetComponent<SpriteRenderer>().sprite = _newTileFishSprite;
+				_newTileFishSprite = _tileFishSprite[Random.Range(0, _tileFishSprite.Count)];
+				_tileFish.GetComponent<SpriteRenderer>().sprite = _newTileFishSprite;
 
-		   position.x += _distance.x;                     
-						
+				position.x += _distance.x;
+
+			}
+							
 			
 		}
-		
+		return _tilesArray;
 	}
 
   
 
-   private void ShiftTilesDown()
+   private SpriteRenderer[,] ShiftTilesDown()
    {
-		Vector2 tempPos;
+		
 		for (int x = 0; x < _size.x; x++)
 		{
+
 			for (int y = 0; y < _size.y; y++)
 			{
-				if (_tilesArray[x, y] != null)
-				{
-					if (_tilesArray[x, y +1] == null)
-					{
-						
-						SpriteRenderer render = _tilesArray[x, y].GetComponent<SpriteRenderer>();
-						
-						tempPos = _tilesArray[x, y].transform.position;
-						transform.position = new Vector2(tempPos.x, tempPos.y - _distance.y);
-						render.sprite =  _tilesArray[x, y +1];
-						_tilesArray[x, y] = null;
+				Vector2 endPos = new Vector2(x, (y + 1) * - _distance.y);
 
-						
-						
+
+				if (_tilesArray[x, y] != null && y <= _size.y - 2)
+				{
+					if (_tilesArray[x, y + 1] == null && y <= _size.y - 1)
+					{
+						_tilesArray[x, y].transform.Translate(0, -_speed * Time.deltaTime, 0, Space.Self);
+
+						if (_tilesArray[x, y].transform.localPosition.y <= endPos.y)
+						{
+							_tilesArray[x, y + 1] = _tilesArray[x, y];
+							_tilesArray[x, y + 1].name = "Fish(" + x + "," + (y + 1) + ")";
+							_tilesArray[x, y] = null;
+
+						}
 					}
+					
+						
 				}
+						
+					
+				
 			}
 		}
+		return _tilesArray;
 		
-	   
    }
+   
+		
+	
+	
 
 
 
 
-
-
-
-
-
-
-
-
-	private void Start()
+	void Start()
 	{
+		_tilesArray= new SpriteRenderer[_size.x, _size.y];
 		CreateTiles();
-		CreateGameBoard();
-		//ShiftTilesDown();
-	   
+		
 	}
 
 	void Update()
 	{
-		
+		CreateGameBoard();
+		ShiftTilesDown();
 	}
 }
 
