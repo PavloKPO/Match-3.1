@@ -60,8 +60,8 @@ public class GameBoard : MonoBehaviour
 	{
 		
 		Vector2 position = _startPosition;
+		Sprite previousLeft = null;
 		
-
 		for (int x = 0; x < _size.x; x++)
 		{
 			if (_tilesArray[x, 0] == null)
@@ -70,10 +70,15 @@ public class GameBoard : MonoBehaviour
 				_tilesArray[x, 0] = newTile;
 				_tilesArray[x, 0].name = "Fish(" + x + "," + 0 + ")";
 				newTile.transform.SetParent(this.transform);
+				                
 
+				List<Sprite> possibleFish = new List<Sprite>();
+				possibleFish.AddRange(_tileFishSprite);
+				possibleFish.Remove(previousLeft);
 
-				_newTileFishSprite = _tileFishSprite[Random.Range(0, _tileFishSprite.Count)];
+				_newTileFishSprite = possibleFish[Random.Range(0, possibleFish.Count)];
 				_tileFish.GetComponent<SpriteRenderer>().sprite = _newTileFishSprite;
+				previousLeft = _newTileFishSprite;
 
 				position.x += _distance.x;
 
