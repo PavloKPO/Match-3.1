@@ -110,6 +110,10 @@ public class GameBoard : MonoBehaviour
 
 						if (_tilesArray[x, y].transform.localPosition.y <= endPos.y)
 						{
+							if (_tilesArray[x, y].transform.localPosition.y < endPos.y)
+							{
+								_tilesArray[x, y].transform.localPosition = new Vector2(endPos.x * _distance.x, endPos.y);
+							}
 							_tilesArray[x, y + 1] = _tilesArray[x, y];
 							_tilesArray[x, y + 1].name = "Fish(" + x + "," + (y + 1) + ")";
 							_tilesArray[x, y] = null;
