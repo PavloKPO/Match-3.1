@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class GameBoard : MonoBehaviour
 {
-	[SerializeField] private SpriteRenderer _spriteRenderer;
 	[SerializeField] private SpriteRenderer _tileFish;
 	[SerializeField] private List<Sprite> _tileFishSprite = new List<Sprite>();
 	[SerializeField] private GameObject _tile;
@@ -74,39 +73,36 @@ public class GameBoard : MonoBehaviour
 	}
 
 	private void ShiftTilesDown()
-	{		
+	{
 		for (int x = 0; x < _size.x; x++)
 		{
-			for (int y = 0; y < _size.y; y++)
+			for (int y = 0; y < _size.y - 1; y++)
 			{
-				Vector2 endPos = new Vector2(x, (y + 1)  * -_distance.y);
+				ref SpriteRenderer tile = ref _tilesArray[x, y];
+				ref SpriteRenderer lowTile = ref _tilesArray[x, y + 1];
 
-				if (_tilesArray[x, y] != null && y <= _size.y - 2)
-				{
-					if (_tilesArray[x, y + 1] == null && y <= _size.y - 1)
-					{
-						_tilesArray[x, y].transform.Translate(0, -_speed * Time.deltaTime, 0, Space.Self);
+				if (tile == null || lowTile != null)
+					continue;
 
-						if (_tilesArray[x, y].transform.localPosition.y <= endPos.y)
-						{
-							if (_tilesArray[x, y].transform.localPosition.y < endPos.y)
-							{
-								_tilesArray[x, y].transform.localPosition = new Vector2(endPos.x  * _distance.x, endPos.y);
-							}
-							_tilesArray[x, y + 1] = _tilesArray[x, y];
-							_tilesArray[x, y + 1].name = "Fish(" + x + "," + (y + 1) + ")";
-							_tilesArray[x, y] = null;
+				Vector2 endPos = new Vector2(x * _distance.y, (y + 1) * - _distance.x);
+				tile.transform.Translate(0, -_speed * Time.deltaTime, 0, Space.Self);
 
-						}
-					}
+				if (tile.transform.localPosition.y > endPos.y)
+					continue;
 
-				}
+				tile.transform.localPosition = endPos;
+				tile.name = GetTileName(x, y + 1);
+				lowTile = tile;
+				tile = null;
 
 			}
 		}
 	} 	
 		
-	
+	private static string GetTileName(int x, int y)
+	{
+		return "Fish(" + x + "," + y + ")";
+	}
 	
 }
 
