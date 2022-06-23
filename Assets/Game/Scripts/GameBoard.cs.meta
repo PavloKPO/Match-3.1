@@ -3,7 +3,10 @@ guid: 7232053165bf10d40acb9c6c15c16f71
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _spriteRenderer: {instanceID: 0}
+  - _tileFish: {fileID: 979639136027629289, guid: 77ebc1c9e1ddb394cbcefad57cbc7b96, type: 3}
+  - _tile: {fileID: 989867330950398768, guid: 44d266a89efcd3c46b12e6679f893990, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
