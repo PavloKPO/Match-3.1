@@ -61,7 +61,7 @@ public class GameBoard : MonoBehaviour
 			{				
 				SpriteRenderer newTile = Instantiate(_tileFish, (_startPosition + distanceX * x), Quaternion.identity, transform);
 				_tilesArray[x, 0] = newTile;
-				_tilesArray[x, 0].name = "Fish(" + x + "," + 0 + ")";
+				_tilesArray[x, 0].name = GetTileName(x, 0);
 
 				List<Sprite> tempFishSprite = new List<Sprite>();
 				tempFishSprite.AddRange(_tileFishSprite);
@@ -103,7 +103,14 @@ public class GameBoard : MonoBehaviour
 	{
 		return "Fish(" + x + "," + y + ")";
 	}
+
 	
+
+
+
+
+
+
 }
 
 
